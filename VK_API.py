@@ -3,25 +3,30 @@ from random import randrange
 import vk_api
 from vk_api.longpoll import VkLongPoll, VkEventType
 
-token = input('Token: ')
 
-vk = vk_api.VkApi(token=token)
-longpoll = VkLongPoll(vk)
+class BOT:
+    def __init__(self, token):
+        self.token = token
+
+    def longpoll_listen(self):
+        self.vk = vk_api.VkApi(token=self.token)
+        return VkLongPoll(self.vk).listen()
+
+    def write_msg(self, user_id, message):
+        self.vk.method('messages.send', {'user_id': user_id, 'message': message, 'random_id': randrange(10 ** 7), })
 
 
-def write_msg(user_id, message):
-    vk.method('messages.send', {'user_id': user_id, 'message': message,  'random_id': randrange(10 ** 7),})
+bot1 = BOT('0059adfe554cc8f08cad4a866d8875065d4bff6dc4ba9cf31daab47c1dca5e730413453727bd2a86817a7')
 
 
-for event in longpoll.listen():
-    if event.type == VkEventType.MESSAGE_NEW:
-
-        if event.to_me:
-            request = event.text
-
-            if request == "привет":
-                write_msg(event.user_id, f"Хай, {event.user_id}")
-            elif request == "пока":
-                write_msg(event.user_id, "Пока((")
-            else:
-                write_msg(event.user_id, "Не поняла вашего ответа...")
+def call_bot():
+    for event in bot1.longpoll_listen():
+        if event.type == VkEventType.MESSAGE_NEW:
+            if event.to_me:
+                request = event.text
+                if request == "привет":
+                    bot1.write_msg(event.user_id, f"Хай, {event.user_id}")
+                elif request == "пока":
+                    bot1.write_msg(event.user_id, "Пока((")
+                else:
+                    bot1.write_msg(event.user_id, "Не поняла вашего ответа...")
