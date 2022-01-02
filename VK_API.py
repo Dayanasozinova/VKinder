@@ -1,23 +1,4 @@
-from random import randrange
-
 import requests
-import vk_api
-from vk_api.longpoll import VkLongPoll, VkEventType
-
-
-class BOT:
-    def __init__(self, token):
-        self.token = token
-
-    def longpoll_listen(self):
-        self.vk = vk_api.VkApi(token=self.token)
-        return VkLongPoll(self.vk).listen()
-
-    def write_msg(self, user_id, message):
-        self.vk.method('messages.send', {'user_id': user_id, 'message': message, 'random_id': randrange(10 ** 7), })
-
-
-bot1 = BOT('0059adfe554cc8f08cad4a866d8875065d4bff6dc4ba9cf31daab47c1dca5e730413453727bd2a86817a7')
 
 
 class API_VK:
@@ -51,30 +32,19 @@ class API_VK:
         res_1 = res_1.json()
         return res_1
 
+    def users_search_men(self, city, bdata):
+        URL = 'https://api.vk.com/method/users.search'
+        params = {
+            'sex': 2,
+            'city': city,
+            'birth_year': bdata,
+            'status': 1,  # статус положение
+            'v': '5.131',
+            'access_token': self.token
+        }
+        res_men = requests.get(URL, params=params)
+        res_men = res_men.json()
+        return res_men
+
 
 vk1 = API_VK('file_vk.txt')
-
-
-def call_bot():
-    for event in bot1.longpoll_listen():
-        if event.type == VkEventType.MESSAGE_NEW:
-            if event.to_me:
-                request = event.text
-                if request == "привет":
-                    vk1.user_get(event.user_id)
-                    bot1.write_msg(event.user_id,
-                                   f"Здравствуйте, {vk1.user_get(event.user_id)['response'][0]['first_name']}. Кого будем искать?\n"
-                                   f"P.S. напишите М или Ж")
-                elif request == "М":
-                    vk1.users_search(2, vk1.user_get(event.user_id)['response'][0]['city']['id'],
-                                     vk1.user_get(event.user_id)['response'][0]['bdate'][-4:])  # для поиска мальчиков
-                    bot1.write_msg(event.user_id, "Ищем)")
-                elif request == "Ж":
-                    print(vk1.users_search(1, vk1.user_get(event.user_id)['response'][0]['city']['id'],
-                                     vk1.user_get(event.user_id)['response'][0]['bdate'][-4:]))  # для поиска девочек
-                    bot1.write_msg(event.user_id, "Ищем)")
-                elif request == "пока":
-                    bot1.write_msg(event.user_id, "Всего доброго")
-                else:
-                    bot1.write_msg(event.user_id, "Не поняла вашего ответа...")
-# call_bot()
