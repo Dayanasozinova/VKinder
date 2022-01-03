@@ -20,9 +20,7 @@ def call_bot():
                 elif request == "Ж":
                     print(vk1.users_search(1, vk1.user_get(event.user_id)['response'][0]['city']['id'],
                                      vk1.user_get(event.user_id)['response'][0]['bdate'][-4:]))  # для поиска девочек
-                    bot1.write_msg(event.user_id, "Ищем)")
-                elif request == "пока":
-                    bot1.write_msg(event.user_id, "Всего доброго")
+                    bot1.write_msg(event.user_id, f"Ищем)")
                 else:
                     bot1.write_msg(event.user_id, "Не поняла вашего ответа...")
 call_bot()

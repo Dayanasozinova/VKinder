@@ -1,4 +1,4 @@
-from VK_API import call_bot
+from call_bot import call_bot
 # from Data
 
 
