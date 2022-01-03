@@ -25,20 +25,6 @@ class API_VK:
         params = {
             'sex': sex,
             'city': city,
-            'birth_year': bdata,
-            'status': 1,
-            'v': '5.131',
-            'access_token': self.token
-        }
-        res_1 = requests.get(URL, params=params)
-        res_1 = res_1.json()
-        return res_1
-
-    def users_search_men(self, city, bdata):
-        URL = 'https://api.vk.com/method/users.search'
-        params = {
-            'sex': 2,
-            'city': city,
             'count': 1000,
             'birth_year': bdata,
             'status': 1,  # статус положение

@@ -23,4 +23,7 @@ def call_bot():
                     bot1.write_msg(event.user_id, f"Ищем)")
                 else:
                     bot1.write_msg(event.user_id, "Не поняла вашего ответа...")
+
+def iter_for_users
+
 call_bot()
