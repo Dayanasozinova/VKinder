@@ -32,13 +32,15 @@ class API_VK:
             'access_token': self.token
         }
         data_users = []
-        res_men = requests.get(URL, params=params)
-        res_men = res_men.json()
-        for user in res_men['response']['items']:
+        res_user = requests.get(URL, params=params)
+        res_user = res_user.json()
+        for user in res_user['response']['items']:
             if user['is_closed'] == False:
                 id_user = user['id']
-                data_users.append(id_user)
-        return len(data_users)
+                first_name = user['first_name']
+                last_name = user['last_name']
+                data_users.append((id_user, first_name, last_name))
+        return data_users
 
     def get_photo(self, user_id):
         URL = 'https://api.vk.com/method/photos.get'
@@ -60,15 +62,26 @@ class API_VK:
             coments = photo['comments']['count']
             url_photo = photo['sizes'][-1]['url']
             data_photo.append((likes, coments, id, url_photo))
-        sort_data_photo = sorted(data_photo, key=itemgetter(0, 1), reverse= True)
-        url_photo_1 = sort_data_photo[0][-1]
-        url_photo_2 = sort_data_photo[1][-1]
-        url_photo_3 = sort_data_photo[2][-1]
-        return url_photo_1, url_photo_2, url_photo_3
+        sort_data_photo = sorted(data_photo, key=itemgetter(0, 1), reverse=True)
+        id_photo_list = []
+        if len(sort_data_photo) >= 3:
+            id_photo_1 = sort_data_photo[0][2]
+            id_photo_list.append(id_photo_1)
+            id_photo_2 = sort_data_photo[1][2]
+            id_photo_list.append(id_photo_2)
+            id_photo_3 = sort_data_photo[2][2]
+            id_photo_list.append(id_photo_3)
+        elif len(sort_data_photo) >= 2:
+            id_photo_1 = sort_data_photo[0][2]
+            id_photo_list.append(id_photo_1)
+            id_photo_2 = sort_data_photo[1][2]
+            id_photo_list.append(id_photo_2)
+        elif len(sort_data_photo) >= 1:
+            id_photo_1 = sort_data_photo[0][2]
+            id_photo_list.append(id_photo_1)
 
+        return id_photo_list
 
-
-        
 
 vk1 = API_VK('file_vk.txt')
-pprint(vk1.users_search_men(60, 1999))
+
