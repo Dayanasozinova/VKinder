@@ -54,6 +54,7 @@ class API_VK:
         }
         res_photo = requests.get(URL, params=params)
         res_photo = res_photo.json()
+        # print(res_photo)
 
         data_photo = []
         for photo in res_photo['response']['items']:
@@ -84,4 +85,28 @@ class API_VK:
 
 
 vk1 = API_VK('file_vk.txt')
-
+# print(vk1.get_photo('63531715'))
+print(vk1.user_get('63531715'))
+# 63531715
+# for user in vk1.users_search(vk1.user_get(event.user_id)['response'][0]['sex'], vk1.user_get(event.user_id)['response'][0]['city']['id'], vk1.user_get(event.user_id)['response'][0]['bdate'][-4:]):
+#     user_ = user[0]
+#     first_name = user[1]
+#     last_name = user[2]
+#     print(first_name, last_name, vk1.get_photo(user_), len(vk1.get_photo(user_)))
+#     # bot1.send_mes(len(vk1.get_photo(user_)))
+#     if len(vk1.get_photo(user_)) >= 3:
+#         bot1.write_msg_3_photo(event.user_id, f"{first_name} {last_name} https://vk.com/id{user_}", user_,
+#                                vk1.get_photo(user_)[0], vk1.get_photo(user_)[1], vk1.get_photo(user_)[2])
+#         time.sleep(5)
+#     elif len(vk1.get_photo(user_)) >= 2:
+#         bot1.write_msg_2_photo(event.user_id, f"{first_name} {last_name} https://vk.com/id{user_}", user_,
+#                                vk1.get_photo(user_)[0], vk1.get_photo(user_)[1])
+#         time.sleep(5)
+#     elif len(vk1.get_photo(user_)) >= 1:
+#         bot1.write_msg_1_photo(event.user_id, f"{first_name} {last_name} https://vk.com/id{user_}", user_,
+#                                vk1.get_photo(user_)[0])
+#         time.sleep(5)
+#     else:
+#         bot1.write_msg_photo_not(len(vk1.get_photo(user_)), event.user_id,
+#                                  f"{first_name} {last_name} https://vk.com/id{user_}")
+#         time.sleep(5)
