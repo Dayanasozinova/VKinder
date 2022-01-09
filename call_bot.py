@@ -11,13 +11,27 @@ while True:
     first_name = data[q][i][1]
     last_name = data[q][i][2]
     for event in bot1.longpoll_listen():
-
         if event.type == VkEventType.MESSAGE_NEW:
             print(f"User_name: {vk1.user_get(event.user_id)['response'][0]['first_name']}")
             print(event.text)
             print('--------')
+            rdb = {}
+            user_id = event.user_id
+
+            # print(event)
             if event.text == 'Начать':
                 bot1.write_msg_hello(event.user_id)
+            elif len(event.text) <= 2 and event.text != 'М' and event.text != 'Ж':
+                rdb['age'] = event.text
+                bot1.sex(event.user_id)
+            elif event.text == 'Я парень':
+                bot1.who_your_interesting(event.user_id)
+            elif event.text == 'Я девушка':
+                bot1.who_your_interesting(event.user_id)
+            elif event.text == 'Девушка':
+                bot1.where_your_life(user_id)
+            elif event.text == 'Парень':
+                bot1.where_your_life(user_id)
 
             elif event.text == 'М':
                 human = vk1.users_search(2, vk1.user_get(event.user_id)['response'][0]['city']['id'],
