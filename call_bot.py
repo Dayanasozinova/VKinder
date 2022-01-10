@@ -21,6 +21,7 @@ while True:
             # print(event)
             if event.text == 'Начать':
                 bot1.write_msg_hello(event.user_id)
+                print(vk1.user_get(event.user_id))
             elif len(event.text) <= 2 and event.text != 'М' and event.text != 'Ж':
                 rdb['age'] = event.text
                 bot1.sex(event.user_id)

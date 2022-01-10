@@ -1,7 +1,7 @@
 from pprint import pprint
 from operator import itemgetter
 import requests
-
+from Data import registration
 
 class API_VK:
     def __init__(self, file):
@@ -18,6 +18,16 @@ class API_VK:
             'access_token': self.token}
         res_2 = requests.get(URL, params=params)
         res_2 = res_2.json()
+        if 'city' in res_2['response'][0].keys():
+            print(True)
+            registration(res_2['response'][0]['id'], res_2['response'][0]['first_name'],
+                         res_2['response'][0]['last_name'], res_2['response'][0]['sex'], res_2['response'][0]['bdate'][-4:],
+                         res_2['response'][0]['city']['id'])
+        else:
+            print(None)
+            registration(res_2['response'][0]['id'], res_2['response'][0]['first_name'],
+                         res_2['response'][0]['last_name'], res_2['response'][0]['sex'], res_2['response'][0]['bdate'][-4:], '',
+                         res_2['response'][0]['home_town'])
         return res_2
 
     def users_search(self, sex, city, bdata):
@@ -110,3 +120,4 @@ print(vk1.user_get('63531715'))
 #         bot1.write_msg_photo_not(len(vk1.get_photo(user_)), event.user_id,
 #                                  f"{first_name} {last_name} https://vk.com/id{user_}")
 #         time.sleep(5)
+
