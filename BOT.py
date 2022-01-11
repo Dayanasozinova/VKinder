@@ -39,17 +39,16 @@ class BOT:
         self.vk.method('messages.send', {'user_id': user_id, 'message': f"Кто тебе интересен?",
                                          'random_id': randrange(10 ** 7),
                                          'keyboard': keyboard.get_keyboard()})
-    def where_your_life(self,user_id):
-        keyboard = VkKeyboard(one_time=True)
-        keyboard.add_location_button()
-        self.vk.method('messages.send', {'user_id': user_id, 'message': f"В каком городе будем искать?",
-                                         'random_id': randrange(10 ** 7),
-                                         'keyboard': keyboard.get_keyboard()})
+    def where_your_life(self,user_id, city):
+
+        self.vk.method('messages.send', {'user_id': user_id, 'message': f"Найдем тебе пару в городе {city}.",
+                                         'random_id': randrange(10 ** 7)})
     def longpoll_listen(self):
         self.vk = vk_api.VkApi(token=self.token)
         return VkLongPoll(self.vk).listen()
 
     def write_msg_photo_not(self, user_id, message):
+        keyboard = VkKeyboard(one_time=True)
         keyboard.add_button('Дальше.', VkKeyboardColor.POSITIVE)
         self.vk.method('messages.send', {'user_id': user_id, 'message': message, 'random_id': randrange(10 ** 7),
                                          'keyboard': [keyboard.get_empty_keyboard(), keyboard.get_keyboard()]})
@@ -59,6 +58,7 @@ class BOT:
     #                                      'keyboard': keyboard.get_keyboard()})
 
     def write_msg_3_photo(self, user_id, message, owner_id, media_id1, media_id2, media_id3):
+        keyboard = VkKeyboard(one_time=True)
         keyboard.add_button('Дальше.', VkKeyboardColor.POSITIVE)
         self.vk.method('messages.send', {'user_id': user_id, 'message': message, 'random_id': randrange(10 ** 7),
                                          'attachment': [f'photo{owner_id}_{media_id1}, '
@@ -67,12 +67,15 @@ class BOT:
                                          'keyboard': keyboard.get_keyboard()})
 
     def write_msg_2_photo(self, user_id, message, owner_id, media_id1, media_id2):
+        keyboard = VkKeyboard(one_time=True)
+        keyboard.add_button('Дальше.', VkKeyboardColor.POSITIVE)
         self.vk.method('messages.send', {'user_id': user_id, 'message': message, 'random_id': randrange(10 ** 7),
                                          'attachment': [f'photo{owner_id}_{media_id1}, '
                                                        f'photo{owner_id}_{media_id2}'],
                                          'keyboard': keyboard.get_keyboard()})
 
     def write_msg_1_photo(self, user_id, message, owner_id, media_id1):
+        keyboard = VkKeyboard(one_time=True)
         keyboard.add_button('Дальше.', VkKeyboardColor.POSITIVE)
         self.vk.method('messages.send', {'user_id': user_id, 'message': message, 'random_id': randrange(10 ** 7),
                                          'attachment': [f'photo{owner_id}_{media_id1}'],

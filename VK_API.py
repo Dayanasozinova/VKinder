@@ -1,7 +1,7 @@
 from pprint import pprint
 from operator import itemgetter
 import requests
-from Data import registration
+
 
 class API_VK:
     def __init__(self, file):
@@ -18,23 +18,14 @@ class API_VK:
             'access_token': self.token}
         res_2 = requests.get(URL, params=params)
         res_2 = res_2.json()
-        if 'city' in res_2['response'][0].keys():
-            print(True)
-            registration(res_2['response'][0]['id'], res_2['response'][0]['first_name'],
-                         res_2['response'][0]['last_name'], res_2['response'][0]['sex'], res_2['response'][0]['bdate'][-4:],
-                         res_2['response'][0]['city']['id'])
-        else:
-            print(None)
-            registration(res_2['response'][0]['id'], res_2['response'][0]['first_name'],
-                         res_2['response'][0]['last_name'], res_2['response'][0]['sex'], res_2['response'][0]['bdate'][-4:], '',
-                         res_2['response'][0]['home_town'])
+
         return res_2
 
     def users_search(self, sex, city, bdata):
         URL = 'https://api.vk.com/method/users.search'
         params = {
             'sex': sex,
-            'city': city,
+            'hometown': city,
             'count': 1000,
             'birth_year': bdata,
             'status': 1,  # статус положение
@@ -92,6 +83,21 @@ class API_VK:
             id_photo_list.append(id_photo_1)
 
         return id_photo_list
+
+    def messages_getByld(self, messages_id, tokenb):
+        URL = 'https://api.vk.com/method/messages.getById'
+        params = {
+            'owner_id': messages_id,
+            'extended': '1',
+            'v': '5.81',
+            'access_token': tokenb
+        }
+        res_mes = requests.get(URL, params=params)
+        res_mes = res_mes.json()
+        return res_mes
+
+
+
 
 
 vk1 = API_VK('file_vk.txt')

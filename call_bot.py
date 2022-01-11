@@ -1,6 +1,7 @@
 
 from vk_api.longpoll import VkEventType
 from BOT import bot1
+from Data import registration
 from VK_API import vk1
 
 while True:
@@ -10,34 +11,56 @@ while True:
     human_id = data[q][i][0]
     first_name = data[q][i][1]
     last_name = data[q][i][2]
+    dbuser_get = []
+    rdb = {}
     for event in bot1.longpoll_listen():
         if event.type == VkEventType.MESSAGE_NEW:
-            print(f"User_name: {vk1.user_get(event.user_id)['response'][0]['first_name']}")
-            print(event.text)
-            print('--------')
-            rdb = {}
-            user_id = event.user_id
 
-            # print(event)
+            user_id = event.user_id
+            dbuser_get.append(vk1.user_get(event.user_id))
+            print(f"{dbuser_get[0]['response'][0]['first_name']} {dbuser_get[0]['response'][0]['last_name']}:", event.text)
             if event.text == 'Начать':
-                bot1.write_msg_hello(event.user_id)
-                print(vk1.user_get(event.user_id))
+                'BOT', bot1.write_msg_hello(event.user_id)
+
             elif len(event.text) <= 2 and event.text != 'М' and event.text != 'Ж':
-                rdb['age'] = event.text
+                rdb['age'] = 2022 - int(event.text)
+                print(rdb['age'])
+                if 'city' in dbuser_get[0]['response'][0].keys():
+                    registration(dbuser_get[0]['response'][0]['id'], dbuser_get[0]['response'][0]['first_name'],
+                                 dbuser_get[0]['response'][0]['last_name'], dbuser_get[0]['response'][0]['sex'],
+                                 dbuser_get[0]['response'][0]['bdate'][-4:],
+                                 dbuser_get[0]['response'][0]['city']['title'])
+                else:
+                    registration(dbuser_get[0]['response'][0]['id'], dbuser_get[0]['response'][0]['first_name'],
+                                 dbuser_get[0]['response'][0]['last_name'], dbuser_get[0]['response'][0]['sex'],
+                                 dbuser_get[0]['response'][0]['bdate'][-4:], 0,
+                                 dbuser_get[0]['response'][0]['home_town'])
                 bot1.sex(event.user_id)
             elif event.text == 'Я парень':
-                bot1.who_your_interesting(event.user_id)
+                if 'city' in dbuser_get[0]['response'][0].keys():
+                    bot1.where_your_life(user_id, dbuser_get[0]['response'][0]['city']['title'])
+                    bot1.who_your_interesting(event.user_id)
+                else:
+                    bot1.where_your_life(user_id, dbuser_get[0]['response'][0]['home_town'])
+                    bot1.who_your_interesting(event.user_id)
             elif event.text == 'Я девушка':
-                bot1.who_your_interesting(event.user_id)
-            elif event.text == 'Девушка':
-                bot1.where_your_life(user_id)
-            elif event.text == 'Парень':
-                bot1.where_your_life(user_id)
+                if 'city' in dbuser_get[0]['response'][0].keys():
+                    bot1.where_your_life(user_id, dbuser_get[0]['response'][0]['city']['title'])
+                    bot1.who_your_interesting(event.user_id)
+                else:
+                    bot1.where_your_life(user_id, dbuser_get[0]['response'][0]['home_town'])
+                    bot1.who_your_interesting(event.user_id)
 
-            elif event.text == 'М':
-                human = vk1.users_search(2, vk1.user_get(event.user_id)['response'][0]['city']['id'],
-                                         vk1.user_get(event.user_id)['response'][0]['bdate'][-4:])
-                data.append(human)
+
+            elif event.text == 'Парень':
+                if 'city' in dbuser_get[0]['response'][0].keys():
+                    human = vk1.users_search(2, dbuser_get[0]['response'][0]['city']['title'],
+                                         rdb['age'])
+                    data.append(human)
+                else:
+                    human = vk1.users_search(2, dbuser_get[0]['response'][0]['home_town'],
+                                             dbuser_get[0]['response'][0]['bdate'][-4:])
+                    data.append(human)
                 # i += 1
                 q += 1
                 human_id = data[1][0][0]
@@ -61,16 +84,21 @@ while True:
                                            vk1.get_photo(human_id)[0])
 
                 else:
-                    bot1.write_msg_photo_not(len(vk1.get_photo(human_id)), event.user_id,
+                    bot1.write_msg_photo_not( event.user_id,
                                              f"{first_name} {last_name} https://vk.com/id{human_id}")
 
 
 
-            elif event.text == 'Ж':
-                human = vk1.users_search(1, vk1.user_get(event.user_id)['response'][0]['city']['id'],
-                                         vk1.user_get(event.user_id)['response'][0]['bdate'][-4:])
-                data.append(human)
-                print('Data:', data)
+            elif event.text == 'Девушка':
+                if 'city' in dbuser_get[0]['response'][0].keys():
+                    human = vk1.users_search(1, dbuser_get[0]['response'][0]['city']['title'],
+                                             rdb['age'])
+                    data.append(human)
+                else:
+                    human = vk1.users_search(1, dbuser_get[0]['response'][0]['home_town'],
+                                             dbuser_get[0]['response'][0]['bdate'][-4:])
+                    data.append(human)
+                print('Human:', human)
                 q += 1
                 human_id = data[1][0][0]
                 first_name = data[1][0][1]
