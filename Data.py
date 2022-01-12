@@ -1,5 +1,3 @@
-import json
-
 import sqlalchemy
 
 engine = sqlalchemy.create_engine('postgresql://artur2:ybvajhn@localhost:5432/vkinder')
@@ -19,7 +17,6 @@ def registration(id_vk, first_name, last_name, sex=None, bdate=None, city=None, 
 def users_search_db(id_vk, json):
     connection.execute(f"""INSERT INTO users_search(user_id, usdb) 
                     VALUES ('{id_vk}','{json}');""")
-# registration(3, 445656, 'Артур', 'Гаязов', 2, '1999', '60')
 
 def usdb (user_id):
     usid = []
@@ -27,6 +24,7 @@ def usdb (user_id):
     for row in cursor:
         usid.append(row['usdb'])
     return usid
+
 def iddb():
     iddb = []
     for row in connection.execute("""SELECT user_id FROM users_search;"""):

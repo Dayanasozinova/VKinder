@@ -1,5 +1,4 @@
 from random import randrange
-
 import vk_api
 from vk_api.longpoll import VkLongPoll
 from vk_api.keyboard import VkKeyboard, VkKeyboardColor
@@ -52,10 +51,7 @@ class BOT:
         keyboard.add_button('Дальше.', VkKeyboardColor.POSITIVE)
         self.vk.method('messages.send', {'user_id': user_id, 'message': message, 'random_id': randrange(10 ** 7),
                                          'keyboard': [keyboard.get_empty_keyboard(), keyboard.get_keyboard()]})
-    #
-    # def write_msg_auth(self, user_id, message):
-    #     self.vk.method('messages.send', {'user_id': user_id, 'message': message, 'random_id': randrange(10 ** 7),
-    #                                      'keyboard': keyboard.get_keyboard()})
+
 
     def write_msg_3_photo(self, user_id, message, owner_id, media_id1, media_id2, media_id3):
         keyboard = VkKeyboard(one_time=True)
