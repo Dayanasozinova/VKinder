@@ -102,7 +102,8 @@ class API_VK:
 
 vk1 = API_VK('file_vk.txt')
 # print(vk1.get_photo('63531715'))
-print(vk1.user_get('63531715'))
+# print(vk1.user_get('63531715'))
+# print(vk1.users_search(1, 'Rfpfym', 1999))
 # 63531715
 # for user in vk1.users_search(vk1.user_get(event.user_id)['response'][0]['sex'], vk1.user_get(event.user_id)['response'][0]['city']['id'], vk1.user_get(event.user_id)['response'][0]['bdate'][-4:]):
 #     user_ = user[0]
