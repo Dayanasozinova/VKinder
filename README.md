@@ -1,4 +1,5 @@
-#**VKINDER BOT V1.0**
+**VKINDER BOT V1.0**
+
 Для настройки бота необходимо заполнить все поля в файле 
 [settings.py](settings.py)
 * token_app - токен вашего приложения ВК
