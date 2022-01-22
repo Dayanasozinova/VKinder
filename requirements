@@ -3,3 +3,4 @@ vk_api v11.9.7
 requests v2.26.0
 operator
 sqlalchemy v1.4.27
+psycopg2 v2.9.2

@@ -13,3 +13,4 @@
 Запускать бота вызвав код файла [main.py](main.py)
 
 *О том как получить все необходимые токены читайтет [тут](https://dev.vk.com/api/access-token/getting-started://dvmn.org/encyclopedia/qna/63/kak-poluchit-token-polzovatelja-dlja-vkontakte/)*
+>По всем вопросам писать на почту: [daanasozinova6@gmail.com](daanasozinova6@gmail.com)
