@@ -2,8 +2,8 @@ from random import randrange
 import vk_api
 from vk_api.longpoll import VkLongPoll
 from vk_api.keyboard import VkKeyboard, VkKeyboardColor
-
-vk = vk_api.VkApi(token='0059adfe554cc8f08cad4a866d8875065d4bff6dc4ba9cf31daab47c1dca5e730413453727bd2a86817a7')
+from settings import token_app
+vk = vk_api.VkApi(token_app)
 longpoll = VkLongPoll(vk)
 
 keyboard = VkKeyboard(one_time=True)

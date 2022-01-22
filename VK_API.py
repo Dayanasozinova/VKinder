@@ -1,11 +1,9 @@
 from operator import itemgetter
 import requests
-
+from settings import token_vk
 
 class API_VK:
-    def __init__(self, file):
-        with open(file, 'r') as f:
-            token = f.read().strip()
+    def __init__(self, token):
         self.token = token
 
     def user_get(self, user_id):
@@ -99,7 +97,7 @@ class API_VK:
 
 
 
-vk1 = API_VK('file_vk.txt')
+vk1 = API_VK(token_vk)
 # print(vk1.get_photo('63531715'))
 # print(vk1.user_get('63531715'))
 # print(vk1.users_search(1, 'Rfpfym', 1999))

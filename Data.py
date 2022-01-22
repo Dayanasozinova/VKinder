@@ -1,6 +1,6 @@
 import sqlalchemy
-
-engine = sqlalchemy.create_engine('postgresql://artur2:ybvajhn@localhost:5432/vkinder')
+from settings import *
+engine = sqlalchemy.create_engine(f'postgresql://{user_name_db}:{password_user_name}@{host}:{port}/{db_name}')
 engine
 connection = engine.connect()
 connection
